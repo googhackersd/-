@@ -1,0 +1,27 @@
+name: Build APK
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+          
+      - name: Install dependencies
+        run: |
+          pip install flet
+          
+      - name: Create APK
+        run: |
+          flet build apk chat.py
+          
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: chat-app
+          path: build/apk/*.apk
